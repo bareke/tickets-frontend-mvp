@@ -1,0 +1,91 @@
+{
+  "project": "tickets-frontend",
+  "description": "Frontend MVP para gestión de compra y venta de tickets. Conecta al backend tickets-backend-mvp.",
+  "rules": {
+    "one_feature_at_a_time": true,
+    "require_verification_to_close": true,
+    "valid_status": ["pending", "in_progress", "done", "blocked"]
+  },
+  "features": [
+    {
+      "id": 0,
+      "name": "F0-scaffolding",
+      "title": "Fase 0 — Scaffolding y Configuración Inicial",
+      "description": "Inicializar proyecto Vue 3 + Vite + TypeScript, configurar Tailwind CSS, shadcn-vue, Axios, Pinia, Vue Router 4, Zod, estructura de carpetas, tipos y schemas.",
+      "spec": "docs/spects/05-implementation-plan.md#fase-0--scaffolding-y-configuración-inicial",
+      "acceptance": [
+        "`npm run dev` levanta sin errores",
+        "Axios configurado con interceptores (token, 401, 403)",
+        "Vue Router con rutas base y guards",
+        "Tipos TypeScript creados en src/types/api.ts",
+        "Schemas Zod en src/lib/validators.ts",
+        "Estructura de carpetas completa (api, components, composables, layouts, lib, router, stores, types, views)",
+        "Proxy de Vite configurado hacia localhost:8000"
+      ],
+      "status": "done"
+    },
+    {
+      "id": 1,
+      "name": "F1-auth",
+      "title": "Fase 1 — Autenticación (Auth Module)",
+      "description": "Implementar registro, login, verificación de email, recuperación de contraseña y logout. Incluye API layer, store auth, composables, layouts, vistas y guards.",
+      "spec": "docs/spects/05-implementation-plan.md#fase-1--autenticación-auth-module",
+      "acceptance": [
+        "Registro de usuario funciona contra backend real",
+        "Login con JWT guarda token en localStorage",
+        "Email no verificado recibe 403 y se muestra aviso",
+        "Verificación de email con token funciona",
+        "Recuperación de contraseña (forgot + reset) funciona",
+        "Logout elimina token y redirige al login",
+        "Guards de ruta protegen páginas autenticadas",
+        "Errores 401 redirigen automáticamente al login"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "name": "F2-profile",
+      "title": "Fase 2 — Perfil de Usuario (Profile Module)",
+      "description": "Implementar vista y edición de perfil, subida de avatar y gestión de roles (comprador/vendedor).",
+      "spec": "docs/spects/05-implementation-plan.md#fase-2--perfil-de-usuario-profile-module",
+      "acceptance": [
+        "GET /users/me muestra datos del perfil",
+        "PATCH /users/me actualiza nombre, apellido y teléfono",
+        "Subida de avatar JPG/PNG funciona (max 2MB)",
+        "Añadir rol de vendedor funciona",
+        "Perfil refleja cambios inmediatamente después de guardar"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "name": "F3-admin",
+      "title": "Fase 3 — Administración (Admin Module)",
+      "description": "Implementar CRUD de usuarios para administradores: listar, crear, editar y eliminar usuarios.",
+      "spec": "docs/spects/05-implementation-plan.md#fase-3--administración-admin-module",
+      "acceptance": [
+        "Listado de usuarios con tabla responsiva",
+        "Creación de usuario con formulario modal",
+        "Edición de usuario con datos pre-poblados",
+        "Eliminación (soft delete) con confirmación",
+        "Solo usuarios con rol admin pueden acceder",
+        "Guard de ruta requiresAdmin implementado"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "name": "F4-polish",
+      "title": "Fase 4 — Polish y Finalización",
+      "description": "Mejorar experiencia de usuario: manejo global de errores, loading states, responsive design y pruebas.",
+      "spec": "docs/spects/05-implementation-plan.md#fase-4--polish-y-finalización",
+      "acceptance": [
+        "Toast/snackbar para operaciones exitosas y errores",
+        "Loading states (spinner, skeleton) en todas las vistas",
+        "Responsive en mobile (sidebar colapsable)",
+        "Manejo de estado vacío en tablas y listas"
+      ],
+      "status": "pending"
+    }
+  ]
+}
