@@ -24,6 +24,17 @@ npm run dev
 El frontend espera un backend FastAPI corriendo en `http://localhost:8000`.  
 Las peticiones a `/api/*` se redirigen automáticamente al backend vía proxy de Vite.
 
+## Variables de entorno
+
+Copia `env.sample` a `.env` y ajusta los valores. Solo las variables con prefijo `VITE_` se exponen al cliente.
+
+| Variable | Por defecto | Descripción |
+|---|---|---|
+| `VITE_API_BASE_URL` | `/api/v1` | URL base de Axios. En dev (mismo origen + proxy) dejar relativa; en producción cross-origin usar la URL absoluta del backend (ej. `https://api.midominio.com/api/v1`). |
+| `VITE_BACKEND_TARGET` | `http://localhost:8000` | Target del proxy de Vite hacia el backend. Solo aplica en `npm run dev`. |
+
+Ambas tienen fallback, por lo que el proyecto funciona sin definir ningún `.env`.
+
 ## Build
 
 ```bash
