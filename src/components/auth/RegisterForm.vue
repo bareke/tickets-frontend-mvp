@@ -96,7 +96,7 @@ async function onSubmit() {
       ...(data.phone ? { phone: data.phone } : {}),
     }
     await register(payload)
-    router.push('/verify-email')
+    router.push(`/verify-email?email=${encodeURIComponent(data.email)}`)
   } catch {
     // error en store
   } finally {

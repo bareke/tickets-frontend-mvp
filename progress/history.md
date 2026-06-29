@@ -96,3 +96,30 @@
 - UserEditDialog usa watch en prop user para pre-poblar el formulario
 - Eliminación usa diálogo de confirmación separado (no dentro de UserTable)
 
+## 2026-06-29 12:15 — F4-polish
+
+**Fase:** F4-polish
+**Estado:** done
+
+### Log
+- Instalado vue-sonner v2.0.9 para toast/snackbar
+- Creado composable `useToast.ts` — wrapper sobre vue-sonner
+- Añadido Toaster global en App.vue (richColors, closeButton)
+- Toasts en LoginForm (éxito al iniciar sesión)
+- Toasts en ProfileView (perfil actualizado, avatar, rol)
+- Toasts en UsersListView (crear, actualizar, eliminar usuario)
+- AppSidebar rediseñado: responsive con overlay, backdrop, animación slide, icons, active-class
+- AppHeader rediseñado: botón hamburguesa en mobile, menú responsive
+- DefaultLayout rediseñado: layout flex horizontal con sidebar fija en desktop
+- Fixed VerifyEmailView: email se pasa como query param desde RegisterForm, resend usa email real
+- UserTable mejorado: loading skeletons, empty state, error alert, estados completos
+- Build exitoso (npm run build), TypeScript check pasó
+
+### Decisiones
+- vue-sonner elegido sobre shadcn-vue Toast (no disponible en v2.7)
+- Sidebar se posiciona fixed en mobile con overlay backdrop (z-index: 30/40)
+- Layout cambia a md:flex en desktop (sidebar estática, contenido scrollable)
+- Toasts usan richColors + closeButton para mejor UX
+- No se implementó refresh token (backend no lo expone actualmente)
+- No se implementaron pruebas unitarias (pendiente para iteración futura)
+
