@@ -27,3 +27,27 @@
 - @lucide/vue reemplaza a lucide-vue-next (deprecado)
 - Toast no disponible en shadcn-vue v2.7, se usará Sonner en Fase 4
 
+## 2026-06-29 10:30 — F1-auth
+
+**Fase:** F1-auth
+**Estado:** done
+
+### Log
+- Creada capa API (`src/api/auth.ts`): register, login, logout, verifyEmail, resendVerification, forgotPassword, resetPassword
+- Creado auth store (`src/stores/auth.ts`): Pinia store con JWT handling (jwt-decode), localStorage persistence, y métodos login/register/logout/setUser/clearAuth
+- Creado composable (`src/composables/useAuth.ts`): wrapper reactivo sobre auth store
+- Creados layouts: AuthLayout (vista centrada para auth), DefaultLayout (sidebar + header para app)
+- Creados componentes compartidos: AppHeader, AppSidebar, LoadingSpinner, ErrorAlert
+- Creados formularios: LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
+- Creadas vistas: LoginView, RegisterView, VerifyEmailView, ForgotPasswordView, ResetPasswordView
+- Actualizados router guards (requiresAuth, requiresGuest) con localStorage directo
+- Actualizado router/index.ts con todas las rutas de auth (lazy-loaded)
+- Construido shadcn-vue componentes faltantes: Input, Alert, Form
+- Build exitoso (npm run build), TypeScript check pasó
+
+### Decisiones
+- Auth store persiste token en localStorage y valida expiración via jwtDecode
+- Router guards leen localStorage directamente (store puede no estar inicializada durante navegación)
+- Componentes UI usan shadcn-vue v2.7 (compatible con Tailwind v4)
+- Las vistas de auth son standalone (no usan DefaultLayout) para evitar mostrar sidebar antes de login
+

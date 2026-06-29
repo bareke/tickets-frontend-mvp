@@ -1,8 +1,8 @@
 # Sesión actual
 
-**Inicio:** —
-**Fase:** —
-**Plan breve:** —
+**Inicio:** YYYY-MM-DD
+**Fase:**
+**Plan breve:**
 
 ---
 
@@ -15,5 +15,3 @@
 
 
 ---
-
-_Sin fase en curso. Elige la próxima de `feature_list.json`._

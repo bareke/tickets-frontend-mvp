@@ -40,7 +40,7 @@
         "Guards de ruta protegen páginas autenticadas",
         "Errores 401 redirigen automáticamente al login"
       ],
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 2,
