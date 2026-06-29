@@ -51,3 +51,25 @@
 - Componentes UI usan shadcn-vue v2.7 (compatible con Tailwind v4)
 - Las vistas de auth son standalone (no usan DefaultLayout) para evitar mostrar sidebar antes de login
 
+## 2026-06-29 11:15 — F2-profile
+
+**Fase:** F2-profile
+**Estado:** done
+
+### Log
+- Creada API layer (`src/api/profile.ts`): getProfile, updateProfile, uploadAvatar, addRole
+- Creado profile store (`src/stores/profile.ts`): profile state, fetchProfile, updateProfile, uploadAvatar, addRole, uploadProgress
+- Creado composable (`src/composables/useProfile.ts`): wrapper reactivo sobre profile store
+- Creado ProfileCard.vue: avatar con iniciales fallback, nombre, email, roles badges por color, fecha membrecía
+- Creado ProfileEditForm.vue: formulario inline name/lastname/phone con validación Zod, guardar/cancelar
+- Creado AvatarUpload.vue: input file con preview, validación JPG/PNG max 2MB, upload con progreso
+- Creado RoleSelector.vue: badges de roles, botón "Convertirse en vendedor" con diálogo de confirmación
+- Actualizado ProfileView.vue: layout completo con cards de perfil, edición, avatar y roles
+- Build exitoso (npm run build), TypeScript check pasó
+
+### Decisiones
+- Profile store mantiene `uploadProgress` para barra de progreso de avatar (no implementada en UI actual, estado disponible)
+- ProfileCard usa iniciales como fallback cuando no hay avatar_url
+- ProfileEditForm usa `editingKey` para reiniciar estado tras guardado exitoso
+- RoleSelector usa shadcn-vue Dialog para confirmación antes de añadir rol vendedor
+
