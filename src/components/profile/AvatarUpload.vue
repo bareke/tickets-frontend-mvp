@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Camera, Upload } from '@lucide/vue'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -60,6 +60,10 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const previewUrl = ref<string | undefined>(props.currentAvatarUrl)
 const uploading = ref(false)
 const errorMsg = ref('')
+
+watch(() => props.currentAvatarUrl, (val) => {
+  previewUrl.value = val
+})
 
 function triggerFileInput() {
   fileInput.value?.click()
@@ -83,11 +87,7 @@ function onFileSelected(event: Event) {
     return
   }
 
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    previewUrl.value = e.target?.result as string
-  }
-  reader.readAsDataURL(file)
+  previewUrl.value = URL.createObjectURL(file)
 
   uploadFile(file)
 }
@@ -96,6 +96,7 @@ async function uploadFile(file: File) {
   uploading.value = true
   try {
     const res = await uploadAvatar(file)
+    previewUrl.value = res.avatar_url
     emit('uploaded', res.avatar_url)
   } catch {
     errorMsg.value = 'Error al subir la imagen'

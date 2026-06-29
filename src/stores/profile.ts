@@ -50,9 +50,6 @@ export const useProfileStore = defineStore('profile', () => {
     uploadProgress.value = 0
     try {
       const res = await profileApi.uploadAvatar(file)
-      if (profile.value) {
-        profile.value = { ...profile.value, avatar_url: res.avatar_url }
-      }
       return res
     } catch (err: unknown) {
       const { detail } = getApiError(err)
