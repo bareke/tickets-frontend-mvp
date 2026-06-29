@@ -40,6 +40,7 @@ import { useAuth } from '@/composables/useAuth'
 const { verifyEmail, resendVerification, loading, error: authError, clearError } = useAuth()
 const route = useRoute()
 const resendMessage = ref<string | null>(null)
+const userEmail = ref(route.query.email as string || '')
 
 onMounted(async () => {
   const token = route.query.token as string
@@ -56,8 +57,13 @@ onMounted(async () => {
 async function handleResend() {
   clearError()
   resendMessage.value = null
+  if (!userEmail.value) {
+    authError.value = 'No se encontró el email. Vuelve a registrarte.'
+    return
+  }
   try {
-    await resendVerification('')
+    await resendVerification(userEmail.value)
+    resendMessage.value = 'Email reenviado. Revisa tu bandeja de entrada.'
   } catch {
     // error en store
   }

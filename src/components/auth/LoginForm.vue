@@ -39,9 +39,11 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner.vue'
 import ErrorAlert from '@/components/shared/ErrorAlert.vue'
 import { useAuth } from '@/composables/useAuth'
 import { loginSchema } from '@/lib/validators'
+import { useToast } from '@/composables/useToast'
 
 const { login, error: authError, clearError } = useAuth()
 const router = useRouter()
+const { toast } = useToast()
 
 const data = reactive({ email: '', password: '' })
 const errors = reactive<Record<string, string>>({})
@@ -64,6 +66,7 @@ async function onSubmit() {
   submitting.value = true
   try {
     await login(data)
+    toast.success('Sesión iniciada correctamente')
     router.push('/profile')
   } catch {
     // error se setea en el store

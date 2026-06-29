@@ -81,9 +81,11 @@ import RoleSelector from '@/components/profile/RoleSelector.vue'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { useProfile } from '@/composables/useProfile'
+import { useToast } from '@/composables/useToast'
 import type { User, UserRole } from '@/types/api'
 
 const { profile, loading, error, fetchProfile } = useProfile()
+const { toast } = useToast()
 
 const editingKey = ref(0)
 const editingSuccess = ref(false)
@@ -101,17 +103,20 @@ onMounted(async () => {
 function onProfileSaved(user: User) {
   profile.value = user
   editingSuccess.value = true
+  toast.success('Perfil actualizado correctamente')
 }
 
 function onAvatarUploaded(url: string) {
   if (profile.value) {
     profile.value = { ...profile.value, avatar_url: url }
   }
+  toast.success('Avatar actualizado')
 }
 
 function onRoleAdded(roles: UserRole[]) {
   if (profile.value) {
     profile.value = { ...profile.value, roles }
   }
+  toast.success('Rol añadido correctamente')
 }
 </script>

@@ -65,9 +65,11 @@ import UserTable from '@/components/admin/UserTable.vue'
 import UserCreateDialog from '@/components/admin/UserCreateDialog.vue'
 import UserEditDialog from '@/components/admin/UserEditDialog.vue'
 import { useUsers } from '@/composables/useUsers'
+import { useToast } from '@/composables/useToast'
 import type { User } from '@/types/api'
 
 const { users, loading, error, fetchUsers, deleteUser } = useUsers()
+const { toast } = useToast()
 
 const openCreate = ref(false)
 const openEdit = ref(false)
@@ -87,11 +89,13 @@ function onEdit(user: User) {
 
 function onCreated() {
   openCreate.value = false
+  toast.success('Usuario creado correctamente')
 }
 
 function onUpdated() {
   openEdit.value = false
   editingUser.value = null
+  toast.success('Usuario actualizado correctamente')
 }
 
 function onEditClosed() {
@@ -109,6 +113,7 @@ async function confirmDelete() {
   deleting.value = true
   try {
     await deleteUser(deletingUser.value.id)
+    toast.success('Usuario eliminado correctamente')
     openDelete.value = false
     deletingUser.value = null
   } catch {
