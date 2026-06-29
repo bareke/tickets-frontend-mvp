@@ -5,10 +5,11 @@
         class="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary"
       >
         <img
-          v-if="user.avatar_url"
+          v-if="user.avatar_url && !imgError"
           :src="user.avatar_url"
           :alt="user.name"
           class="h-full w-full rounded-full object-cover"
+          @error="imgError = true"
         />
         <span v-else>{{ initials }}</span>
       </div>
@@ -40,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Mail, Calendar } from '@lucide/vue'
@@ -54,6 +55,12 @@ const props = defineProps<{
 }>()
 
 const fullName = computed(() => `${props.user.name} ${props.user.lastname}`)
+
+const imgError = ref(false)
+
+watch(() => props.user.avatar_url, () => {
+  imgError.value = false
+})
 
 const initials = computed(() => {
   const first = props.user.name?.charAt(0) ?? ''

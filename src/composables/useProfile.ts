@@ -1,12 +1,14 @@
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 export function useProfile() {
   const store = useProfileStore()
-  const { profile, loading, error, uploadProgress } = storeToRefs(store)
 
   return {
-    profile, loading, error, uploadProgress,
+    profile: toRef(store, 'profile'),
+    loading: toRef(store, 'loading'),
+    error: toRef(store, 'error'),
+    uploadProgress: toRef(store, 'uploadProgress'),
     fetchProfile: store.fetchProfile,
     updateProfile: store.updateProfile,
     uploadAvatar: store.uploadAvatar,

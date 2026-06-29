@@ -15,7 +15,7 @@
       />
 
       <template v-if="profile">
-        <ProfileCard :user="profile" />
+        <ProfileCard :key="'pc-' + (profile.avatar_url || 'none')" :user="profile" />
 
         <Card>
           <CardHeader>
