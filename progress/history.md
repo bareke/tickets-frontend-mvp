@@ -73,3 +73,26 @@
 - ProfileEditForm usa `editingKey` para reiniciar estado tras guardado exitoso
 - RoleSelector usa shadcn-vue Dialog para confirmación antes de añadir rol vendedor
 
+## 2026-06-29 11:45 — F3-admin
+
+**Fase:** F3-admin
+**Estado:** done
+
+### Log
+- Creada API layer (`src/api/users.ts`): getUsers, getUser, createUser, updateUser, deleteUser
+- Creado admin store (`src/stores/admin.ts`): users list, CRUD actions, loading/error states
+- Creado composable (`src/composables/useUsers.ts`): wrapper reactivo sobre admin store
+- Creado UserTable.vue: tabla responsiva con loading (skeleton), empty, error, sort, acciones editar/eliminar
+- Creado UserCreateDialog.vue: modal con formulario email/password/name/lastname/role, validación Zod
+- Creado UserEditDialog.vue: modal pre-poblado con datos del usuario, password opcional
+- Actualizado UsersListView.vue: layout completo con tabla + diálogos + confirmación de eliminación
+- Añadido guard `requiresAdmin` en guards.ts (decodifica JWT vía atob)
+- Actualizado router: ruta /admin/users usa `requiresAuth + requiresAdmin`
+- Build exitoso (npm run build), TypeScript check pasó
+
+### Decisiones
+- requiresAdmin decodifica JWT con atob (no necesita jwt-decode) para evitar imports circulares
+- AdminLayout no implementado — se usa DefaultLayout directamente (sidebar + header)
+- UserEditDialog usa watch en prop user para pre-poblar el formulario
+- Eliminación usa diálogo de confirmación separado (no dentro de UserTable)
+

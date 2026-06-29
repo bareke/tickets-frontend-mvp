@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { requiresAuth, requiresGuest } from './guards'
+import { requiresAuth, requiresGuest, requiresAdmin } from './guards'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -45,7 +45,7 @@ const router = createRouter({
     {
       path: '/admin/users',
       name: 'admin-users',
-      beforeEnter: [requiresAuth],
+      beforeEnter: [requiresAuth, requiresAdmin],
       component: () => import('@/views/admin/UsersListView.vue'),
     },
     {
