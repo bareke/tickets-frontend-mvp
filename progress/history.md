@@ -123,3 +123,21 @@
 - No se implementó refresh token (backend no lo expone actualmente)
 - No se implementaron pruebas unitarias (pendiente para iteración futura)
 
+## 2026-06-29 — F5-env-config
+
+**Fase:** F5-env-config
+**Estado:** done
+
+### Log
+- `src/api/client.ts`: `baseURL` lee `import.meta.env.VITE_API_BASE_URL` con fallback `'/api/v1'`
+- `vite.config.ts`: migrado a forma funcional con `loadEnv`; el target del proxy (`/api` y `/media`) lee `VITE_BACKEND_TARGET` con fallback `'http://localhost:8000'`
+- Creado `src/vite-env.d.ts`: tipado de `ImportMetaEnv` para `VITE_API_BASE_URL` y `VITE_BACKEND_TARGET` (+ referencia a `vite/client`)
+- Creado `env.sample` documentando ambas variables
+- `README.md`: añadida sección "Variables de entorno" con tabla
+- Build exitoso (npm run build), TypeScript check (vue-tsc) pasó
+
+### Decisiones
+- Ambas variables tienen fallback, por lo que el proyecto sigue funcionando sin ningún `.env` (no rompe el flujo de dev actual)
+- `VITE_BACKEND_TARGET` solo aplica al proxy de dev; en producción cross-origin se usa `VITE_API_BASE_URL` con URL absoluta
+- No se creó spec en `docs/spects/` (feature surgida de revisión, no del plan original)
+

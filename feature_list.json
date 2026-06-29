@@ -86,6 +86,20 @@
         "Manejo de estado vacío en tablas y listas"
       ],
       "status": "done"
+    },
+    {
+      "id": 5,
+      "name": "F5-env-config",
+      "title": "Fase 5 — Configuración de URL del backend por variable de entorno",
+      "description": "Parametrizar la URL del backend mediante variables de entorno de Vite en lugar de tenerla hardcodeada. Actualmente el baseURL de Axios ('/api/v1') y el target del proxy de Vite ('http://localhost:8000') están fijos en código, lo que impide configurar otro backend en producción sin recompilar.",
+      "acceptance": [
+        "baseURL de Axios en src/api/client.ts lee import.meta.env.VITE_API_BASE_URL con fallback a '/api/v1'",
+        "Target del proxy en vite.config.ts lee variable de entorno (p. ej. VITE_BACKEND_TARGET) con fallback a 'http://localhost:8000'",
+        "Existe un archivo env.sample documentando VITE_API_BASE_URL y VITE_BACKEND_TARGET",
+        "README documenta las variables de entorno disponibles",
+        "npm run dev y npm run build funcionan con y sin las variables definidas"
+      ],
+      "status": "done"
     }
   ]
 }
