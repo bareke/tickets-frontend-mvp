@@ -76,6 +76,7 @@ import {
 } from '@/components/ui/select'
 import { registerSchema } from '@/lib/validators'
 import { useUsers } from '@/composables/useUsers'
+import { getApiError } from '@/lib/api-error'
 import type { User, UserRole } from '@/types/api'
 
 defineProps<{
@@ -132,9 +133,9 @@ async function handleSubmit() {
       role: form.role,
     })
     emit('created', user)
-  } catch (err: any) {
-    const detail = err?.response?.data?.detail
-    apiError.value = typeof detail === 'string' ? detail : 'Error al crear usuario'
+  } catch (err: unknown) {
+    const { detail } = getApiError(err)
+    apiError.value = detail ?? 'Error al crear usuario'
   } finally {
     submitting.value = false
   }

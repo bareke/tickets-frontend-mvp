@@ -5,12 +5,12 @@ export function useAuth() {
   const store = useAuthStore()
   const {
     token, user, loading, error,
-    isAuthenticated, userRoles, isAdmin, isEmailVerified,
+    isAuthenticated, userRoles, isAdmin, isSeller, isEmailVerified,
   } = storeToRefs(store)
 
   return {
     token, user, loading, error,
-    isAuthenticated, userRoles, isAdmin, isEmailVerified,
+    isAuthenticated, userRoles, isAdmin, isSeller, isEmailVerified,
     register: store.register,
     login: store.login,
     logout: store.logout,

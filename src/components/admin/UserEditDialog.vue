@@ -71,6 +71,7 @@ import {
   Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
 } from '@/components/ui/select'
 import { useUsers } from '@/composables/useUsers'
+import { getApiError } from '@/lib/api-error'
 import type { User, UserRole } from '@/types/api'
 
 const props = defineProps<{
@@ -108,7 +109,7 @@ watch(() => props.user, (user) => {
 async function handleSubmit() {
   apiError.value = ''
 
-  const payload: Record<string, any> = {}
+  const payload: Partial<User> & { password?: string } = {}
   if (form.email) payload.email = form.email
   if (form.name) payload.name = form.name
   if (form.lastname) payload.lastname = form.lastname
@@ -120,9 +121,9 @@ async function handleSubmit() {
     if (!props.user) return
     const updated = await updateUser(props.user.id, payload)
     emit('updated', updated)
-  } catch (err: any) {
-    const detail = err?.response?.data?.detail
-    apiError.value = typeof detail === 'string' ? detail : 'Error al actualizar usuario'
+  } catch (err: unknown) {
+    const { detail } = getApiError(err)
+    apiError.value = detail ?? 'Error al actualizar usuario'
   } finally {
     submitting.value = false
   }

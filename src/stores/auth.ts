@@ -2,14 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { jwtDecode } from 'jwt-decode'
 import * as authApi from '@/api/auth'
-import type { User, RegisterRequest, LoginRequest, UserRole } from '@/types/api'
-
-interface JwtPayload {
-  sub: string
-  email: string
-  roles: string[]
-  exp: number
-}
+import { getApiError } from '@/lib/api-error'
+import type { User, RegisterRequest, LoginRequest, UserRole, JwtPayload } from '@/types/api'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('auth_token'))
@@ -62,12 +56,12 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       await authApi.register(data)
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
+    } catch (err: unknown) {
+      const { detail } = getApiError(err)
       if (detail === 'Email already registered') {
         error.value = 'Este email ya está registrado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al registrarse'
+        error.value = detail ?? 'Error al registrarse'
       }
       throw err
     } finally {
@@ -81,15 +75,14 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await authApi.login(data)
       _setSession(res.access_token)
-    } catch (err: any) {
-      const status = err?.response?.status
-      const detail = err?.response?.data?.detail
+    } catch (err: unknown) {
+      const { detail, status } = getApiError(err)
       if (status === 401) {
         error.value = 'Credenciales inválidas'
       } else if (status === 403) {
         error.value = 'Email no verificado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al iniciar sesión'
+        error.value = detail ?? 'Error al iniciar sesión'
       }
       throw err
     } finally {
@@ -114,9 +107,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await authApi.verifyEmail(tokenStr)
       return res
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      error.value = typeof detail === 'string' ? detail : 'Token inválido o expirado'
+    } catch (err: unknown) {
+      const { detail } = getApiError(err)
+      error.value = detail ?? 'Token inválido o expirado'
       throw err
     } finally {
       loading.value = false
@@ -129,12 +122,12 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await authApi.resendVerification(email)
       return res
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
+    } catch (err: unknown) {
+      const { detail } = getApiError(err)
       if (detail === 'Email already verified') {
         error.value = 'El email ya está verificado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al reenviar verificación'
+        error.value = detail ?? 'Error al reenviar verificación'
       }
       throw err
     } finally {
@@ -148,10 +141,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await authApi.forgotPassword({ email })
       return res
-    } catch {
-      // Siempre devuelve 200, pero por si acaso
+    } catch (err: unknown) {
       error.value = 'Error al solicitar recuperación'
-      throw error
+      throw err
     } finally {
       loading.value = false
     }
@@ -163,9 +155,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await authApi.resetPassword({ token: tokenStr, new_password: newPassword })
       return res
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      error.value = typeof detail === 'string' ? detail : 'Error al restablecer contraseña'
+    } catch (err: unknown) {
+      const { detail } = getApiError(err)
+      error.value = detail ?? 'Error al restablecer contraseña'
       throw err
     } finally {
       loading.value = false

@@ -59,6 +59,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
+import { roleLabel, roleBadgeVariant } from '@/lib/roles'
 import { useProfile } from '@/composables/useProfile'
 import type { UserRole } from '@/types/api'
 
@@ -77,24 +78,6 @@ const adding = ref(false)
 const errorMsg = ref('')
 
 const hasSellerRole = computed(() => props.currentRoles.includes('seller'))
-
-function roleLabel(role: UserRole): string {
-  const labels: Record<UserRole, string> = {
-    buyer: 'Comprador',
-    seller: 'Vendedor',
-    admin: 'Administrador',
-  }
-  return labels[role] ?? role
-}
-
-function roleBadgeVariant(role: UserRole): 'default' | 'secondary' | 'destructive' {
-  const variants: Record<UserRole, 'default' | 'secondary' | 'destructive'> = {
-    buyer: 'secondary',
-    seller: 'default',
-    admin: 'destructive',
-  }
-  return variants[role] ?? 'secondary'
-}
 
 async function handleAddRole() {
   adding.value = true

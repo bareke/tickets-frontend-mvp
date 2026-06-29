@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import * as usersApi from '@/api/users'
+import { getApiError } from '@/lib/api-error'
 import type { User, RegisterRequest, UserRole } from '@/types/api'
 
 export const useAdminStore = defineStore('admin', () => {
@@ -15,9 +16,9 @@ export const useAdminStore = defineStore('admin', () => {
     try {
       const data = await usersApi.getUsers()
       users.value = data
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      error.value = typeof detail === 'string' ? detail : 'Error al obtener usuarios'
+    } catch (err: unknown) {
+      const { detail } = getApiError(err)
+      error.value = detail ?? 'Error al obtener usuarios'
       throw err
     } finally {
       loading.value = false
@@ -30,12 +31,12 @@ export const useAdminStore = defineStore('admin', () => {
     try {
       const data = await usersApi.getUser(id)
       selectedUser.value = data
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      if (err?.response?.status === 404) {
+    } catch (err: unknown) {
+      const { detail, status } = getApiError(err)
+      if (status === 404) {
         error.value = 'Usuario no encontrado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al obtener usuario'
+        error.value = detail ?? 'Error al obtener usuario'
       }
       throw err
     } finally {
@@ -50,13 +51,12 @@ export const useAdminStore = defineStore('admin', () => {
       const newUser = await usersApi.createUser(data)
       users.value.push(newUser)
       return newUser
-    } catch (err: any) {
-      const status = err?.response?.status
-      const detail = err?.response?.data?.detail
+    } catch (err: unknown) {
+      const { detail, status } = getApiError(err)
       if (status === 409) {
         error.value = 'El email ya está registrado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al crear usuario'
+        error.value = detail ?? 'Error al crear usuario'
       }
       throw err
     } finally {
@@ -77,12 +77,12 @@ export const useAdminStore = defineStore('admin', () => {
         selectedUser.value = updated
       }
       return updated
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      if (err?.response?.status === 404) {
+    } catch (err: unknown) {
+      const { detail, status } = getApiError(err)
+      if (status === 404) {
         error.value = 'Usuario no encontrado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al actualizar usuario'
+        error.value = detail ?? 'Error al actualizar usuario'
       }
       throw err
     } finally {
@@ -99,12 +99,12 @@ export const useAdminStore = defineStore('admin', () => {
       if (selectedUser.value?.id === id) {
         selectedUser.value = null
       }
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail
-      if (err?.response?.status === 404) {
+    } catch (err: unknown) {
+      const { detail, status } = getApiError(err)
+      if (status === 404) {
         error.value = 'Usuario no encontrado'
       } else {
-        error.value = typeof detail === 'string' ? detail : 'Error al eliminar usuario'
+        error.value = detail ?? 'Error al eliminar usuario'
       }
       throw err
     } finally {

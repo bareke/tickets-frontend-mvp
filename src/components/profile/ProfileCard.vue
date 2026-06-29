@@ -46,7 +46,8 @@ import { es } from 'date-fns/locale'
 import { Mail, Calendar } from '@lucide/vue'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { User, UserRole } from '@/types/api'
+import { roleLabel, roleBadgeVariant } from '@/lib/roles'
+import type { User } from '@/types/api'
 
 const props = defineProps<{
   user: User
@@ -60,26 +61,8 @@ const initials = computed(() => {
   return (first + last).toUpperCase()
 })
 
-const memberSince = computed(() => {
+  const memberSince = computed(() => {
   if (!props.user.created_at) return ''
   return format(new Date(props.user.created_at), 'MMMM yyyy', { locale: es })
 })
-
-function roleLabel(role: UserRole): string {
-  const labels: Record<UserRole, string> = {
-    buyer: 'Comprador',
-    seller: 'Vendedor',
-    admin: 'Administrador',
-  }
-  return labels[role] ?? role
-}
-
-function roleBadgeVariant(role: UserRole): 'default' | 'secondary' | 'destructive' {
-  const variants: Record<UserRole, 'default' | 'secondary' | 'destructive'> = {
-    buyer: 'secondary',
-    seller: 'default',
-    admin: 'destructive',
-  }
-  return variants[role] ?? 'secondary'
-}
 </script>

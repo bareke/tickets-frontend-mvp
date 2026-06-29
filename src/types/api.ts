@@ -1,5 +1,12 @@
 export type UserRole = 'buyer' | 'seller' | 'admin'
 
+export interface JwtPayload {
+  sub: string
+  email: string
+  roles: string[]
+  exp: number
+}
+
 export interface User {
   id: number
   email: string

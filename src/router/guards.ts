@@ -1,3 +1,6 @@
+import { jwtDecode } from 'jwt-decode'
+import type { JwtPayload } from '@/types/api'
+
 export function requiresAuth() {
   const token = localStorage.getItem('auth_token')
   if (!token) {
@@ -18,8 +21,8 @@ export function requiresAdmin() {
     return { name: 'login' }
   }
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    if (!payload.roles?.includes('admin')) {
+    const decoded = jwtDecode<JwtPayload>(token)
+    if (!decoded.roles?.includes('admin')) {
       return { name: 'profile' }
     }
   } catch {

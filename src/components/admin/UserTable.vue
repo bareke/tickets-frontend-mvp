@@ -72,7 +72,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
-import type { User, UserRole } from '@/types/api'
+import { roleLabel, roleBadgeVariant } from '@/lib/roles'
+import type { User } from '@/types/api'
 
 defineProps<{
   users: User[]
@@ -84,24 +85,6 @@ defineEmits<{
   edit: [user: User]
   delete: [user: User]
 }>()
-
-function roleLabel(role: UserRole): string {
-  const labels: Record<UserRole, string> = {
-    buyer: 'Comprador',
-    seller: 'Vendedor',
-    admin: 'Administrador',
-  }
-  return labels[role] ?? role
-}
-
-function roleBadgeVariant(role: UserRole): 'default' | 'secondary' | 'destructive' {
-  const variants: Record<UserRole, 'default' | 'secondary' | 'destructive'> = {
-    buyer: 'secondary',
-    seller: 'default',
-    admin: 'destructive',
-  }
-  return variants[role] ?? 'secondary'
-}
 
 function formatDate(dateStr: string): string {
   if (!dateStr) return ''
